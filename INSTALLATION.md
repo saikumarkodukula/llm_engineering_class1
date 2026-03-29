@@ -1,7 +1,7 @@
 # Installation Guide
 
 This project does not automatically install requirements just because students receive the same folder.
-Each student needs to install Python, install the Python packages from `requirements.txt`, and run Ollama locally for the best prompt results.
+Each student needs to install Python, install the Python packages from `requirements.txt`, and optionally install Ollama for the best local prompt results.
 
 ## Before You Start
 
@@ -9,6 +9,25 @@ Each student needs to install Python, install the Python packages from `requirem
 - Make sure Python is added to your terminal path
 - Install Ollama if you want the best local model results
 - Keep the project files in one folder
+
+## Current Notes
+
+As of March 29, 2026:
+
+- The latest Python release on python.org is Python 3.14.3
+- This project still only requires Python 3.10 or newer
+- Ollama remains the recommended local runtime for classroom demos
+- `llama3.2:latest` is still a valid Ollama model tag for the prompt demos
+
+Official downloads:
+
+- Python: https://www.python.org/downloads/
+- Ollama: https://ollama.com/download
+
+Platform notes from the official Ollama download pages:
+
+- macOS: Ollama requires macOS Sonoma 14 or newer
+- Windows: Ollama requires Windows 10 or newer
 
 ## Recommended Runtime Order
 
@@ -20,7 +39,13 @@ The project now tries providers in this order:
 For the best classroom demo results, use Ollama with:
 
 - `llama3.2:latest` for prompt demos
-- `nomic-embed-text:latest` for embeddings used by ChromaDB
+- `nomic-embed-text:latest` for embeddings used by ChromaDB in Ollama-backed workflows
+
+Important first-run note:
+
+- The Hugging Face fallback model may need to download on first use
+- The RAG demo also uses the sentence-transformer model `all-MiniLM-L6-v2`
+- If those models are not already cached on the machine, students need internet access the first time they run them
 
 ## macOS Quick Setup
 
@@ -37,7 +62,7 @@ ollama pull nomic-embed-text:latest
 python3 main.py
 ```
 
-These commands do all required setup for this project:
+These commands do the main local setup for this project:
 
 - move into the project folder
 - create a virtual environment
@@ -46,6 +71,11 @@ These commands do all required setup for this project:
 - install everything from `requirements.txt`
 - download the local Ollama models used by the demo
 - start the classroom app
+
+Possible first-run download:
+
+- If the project falls back to Hugging Face, the local model may download the first time it is used
+- If the RAG embedding model is not already cached, the RAG demo may require a first-time model download before it works offline
 
 ## macOS Step-By-Step
 
@@ -88,7 +118,7 @@ python3 -m pip install -r requirements.txt
 
 ### 6. Install Ollama models
 
-If Ollama is installed, download the classroom models:
+If Ollama is installed and running, download the classroom models:
 
 ```bash
 ollama pull llama3.2:latest
@@ -128,7 +158,7 @@ If `py` is not available, replace the second command with:
 python -m venv .venv
 ```
 
-These commands do all required setup for this project:
+These commands do the main local setup for this project:
 
 - move into the project folder
 - create a virtual environment
@@ -137,6 +167,11 @@ These commands do all required setup for this project:
 - install everything from `requirements.txt`
 - download the local Ollama models used by the demo
 - start the classroom app
+
+Possible first-run download:
+
+- If the project falls back to Hugging Face, the local model may download the first time it is used
+- If the RAG embedding model is not already cached, the RAG demo may require a first-time model download before it works offline
 
 ## Windows Step-By-Step
 
@@ -191,7 +226,7 @@ python -m pip install -r requirements.txt
 
 ### 6. Install Ollama models
 
-If Ollama is installed, download the classroom models:
+If Ollama is installed and running, download the classroom models:
 
 ```powershell
 ollama pull llama3.2:latest
@@ -217,6 +252,42 @@ Run prompt demo only:
 ```bash
 python run_prompt_demo.py
 ```
+
+Run RAG demo only:
+
+```bash
+python run_rag_demo.py
+```
+
+Run knowledge graph demo only:
+
+```bash
+python run_knowledge_graph_demo.py
+```
+
+Run all demos without the menu:
+
+```bash
+python run_both_demos.py
+```
+
+## Troubleshooting
+
+If `ollama` is not found:
+
+- Install Ollama from https://ollama.com/download
+- Open Ollama once so the local service starts
+- Then rerun the `ollama pull ...` commands
+
+If prompt demos start but RAG fails on first run:
+
+- The machine may still need to download the embedding model used by ChromaDB
+- Connect to the internet once and rerun the RAG demo
+
+If Hugging Face fallback fails on first run:
+
+- The machine may need internet access to download the fallback model the first time
+- After the model is cached locally, later runs can work offline
 
 Run RAG demo only:
 
