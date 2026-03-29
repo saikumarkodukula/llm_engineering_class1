@@ -1,0 +1,3 @@
+ChromaDB stores vector embeddings so we can perform semantic search.
+In a RAG system, we embed documents, store them, query top-k results,
+and send the retrieved context to the language model.
