@@ -1,6 +1,5 @@
 # LLM Engineering Class 1
 
-This project is a simple teaching starter for your first LLM engineering class.
 It covers three big ideas:
 
 1. How to load and use an LLM from Ollama or Hugging Face
@@ -446,5 +445,3 @@ This project now gives you:
 - code comments for students
 - documented package roles
 - documented code flow
-
-For a first LLM engineering class, this is enough to teach the core ideas clearly without unnecessary complexity.
