@@ -4,3 +4,6 @@ __pycache__/
 *.pyc
 .DS_Store
 chroma_storage/
+.env
+LLM_Engineering_Class1_Codebase_Explanation.pdf
+LLM_Engineering_Class1_Student_Notes.pdf
