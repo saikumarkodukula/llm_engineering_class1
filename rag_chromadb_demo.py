@@ -2,7 +2,7 @@
 RAG demo using ChromaDB.
 
 This file shows the complete classroom flow:
-1. Create a few sample documents
+1. Create or load weight-loss guidance documents
 2. Convert them into vector embeddings
 3. Store them inside ChromaDB
 4. Query the top-k most relevant chunks
@@ -10,68 +10,129 @@ This file shows the complete classroom flow:
 """
 
 from pathlib import Path
+import re
 from typing import Any, Dict, List
 
 import chromadb
 from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
 
+from demo_output_utils import print_banner, print_key_value, print_section
 from llm_utils import ask_llm, load_llm
 
 
 # We keep the database folder inside the project so students can inspect it.
 CHROMA_PATH = Path("chroma_storage")
+COLLECTION_NAME = "weight_loss_guidance"
 DATA_DIR = Path("sample_data")
+PDF_DIR = DATA_DIR / "pdfs"
+CHUNK_SIZE = 1000
+CHUNK_OVERLAP = 150
+ADULT_TERMS = {"adult", "adults", "weight loss", "obesity", "calorie", "diet"}
+CHILD_TERMS = {"child", "children", "adolescent", "young people", "teen"}
 
 
 def get_sample_documents() -> List[Dict[str, str]]:
     """
-    Return a small in-memory dataset for demonstration.
+    Return a tiny fallback corpus used when no local files are present.
 
-    In a real project, these could come from PDFs, web pages,
-    company documents, or classroom notes.
+    Parameters:
+    - None.
+
+    Returns:
+    - List[Dict[str, str]]: A short list of built-in documents with `id` and
+      `text` fields.
     """
     return [
         {
             "id": "doc_1",
             "text": (
-                "Transformers are deep learning models that are very effective "
-                "for natural language processing tasks such as translation, "
-                "summarization, question answering, and text generation."
+                "Safe weight loss usually requires a calorie deficit, regular "
+                "physical activity, and a balanced eating pattern that can be "
+                "maintained over time."
             ),
         },
         {
             "id": "doc_2",
             "text": (
-                "ChromaDB is a vector database used to store embeddings. "
-                "It helps retrieve the most relevant text chunks for a query."
+                "Very-low-calorie diets should not be used as routine obesity "
+                "management without clinical support and a nutritionally "
+                "complete plan."
             ),
         },
         {
             "id": "doc_3",
             "text": (
-                "Prompt engineering is the process of designing better prompts "
-                "so a language model can produce more accurate and useful results."
+                "Long-term weight management is more likely when people use "
+                "flexible dietary changes instead of highly restrictive plans "
+                "that are difficult to sustain."
             ),
         },
         {
             "id": "doc_4",
             "text": (
-                "Retrieval-Augmented Generation, or RAG, combines information "
-                "retrieval with text generation. The retriever fetches useful "
-                "context, and the language model uses that context to answer."
+                "Guidelines often recommend multicomponent care for obesity, "
+                "including nutrition support, physical activity, behavior "
+                "change strategies, and professional follow-up when needed."
             ),
         },
     ]
 
 
-def load_documents_from_text_files() -> List[Dict[str, str]]:
+def chunk_text_for_rag(
+    text: str,
+    chunk_size: int = CHUNK_SIZE,
+    chunk_overlap: int = CHUNK_OVERLAP,
+) -> List[str]:
     """
-    Load documents from local .txt files.
+    Split long text into overlapping chunks for vector retrieval.
 
-    This lets students replace the in-memory examples with their own notes.
-    Each text file becomes one document in the vector database.
+    Parameters:
+    - text: The raw text to split into chunks.
+    - chunk_size: The target maximum size of each chunk in characters.
+    - chunk_overlap: The number of characters to overlap between chunks.
+
+    Returns:
+    - List[str]: The ordered list of chunk strings.
     """
-    documents: List[Dict[str, str]] = []
+    cleaned_text = " ".join(text.split())
+    if not cleaned_text:
+        return []
+
+    chunks: List[str] = []
+    start = 0
+    text_length = len(cleaned_text)
+
+    while start < text_length:
+        end = min(text_length, start + chunk_size)
+        if end < text_length:
+            last_space = cleaned_text.rfind(" ", start, end)
+            if last_space > start + 100:
+                end = last_space
+
+        chunk = cleaned_text[start:end].strip()
+        if chunk:
+            chunks.append(chunk)
+
+        if end >= text_length:
+            break
+
+        start = max(end - chunk_overlap, start + 1)
+
+    return chunks
+
+
+def load_documents_from_text_files() -> List[Dict[str, Any]]:
+    """
+    Load `.txt` files from `sample_data/` and convert them into chunks.
+
+    Parameters:
+    - None.
+
+    Returns:
+    - List[Dict[str, Any]]: A list of chunk records, each containing `id`,
+      `text`, and metadata such as file name and chunk index.
+    """
+    documents: List[Dict[str, Any]] = []
 
     if not DATA_DIR.exists():
         return documents
@@ -82,23 +143,92 @@ def load_documents_from_text_files() -> List[Dict[str, str]]:
         if not file_text:
             continue
 
-        documents.append(
-            {
-                "id": text_file.stem,
-                "text": file_text,
-            }
-        )
+        for chunk_index, chunk_text in enumerate(chunk_text_for_rag(file_text), start=1):
+            documents.append(
+                {
+                    "id": f"{text_file.stem}_chunk_{chunk_index}",
+                    "text": chunk_text,
+                    "metadata": {
+                        "document_name": text_file.name,
+                        "source_path": str(text_file),
+                        "chunk_index": chunk_index,
+                    },
+                }
+            )
 
     return documents
 
 
-def get_documents_for_demo() -> List[Dict[str, str]]:
+def load_documents_from_pdf_files() -> List[Dict[str, Any]]:
     """
-    Prefer local text files when they exist.
+    Load PDF files from `sample_data/pdfs/` and chunk them page by page.
 
-    This makes the classroom demo more realistic because you can drop files
-    into the folder without changing the code.
+    Parameters:
+    - None.
+
+    Returns:
+    - List[Dict[str, Any]]: A list of chunk records extracted from PDF pages,
+      including page and chunk metadata.
     """
+    documents: List[Dict[str, Any]] = []
+
+    if not PDF_DIR.exists():
+        return documents
+
+    pdf_files = sorted(PDF_DIR.glob("*.pdf"))
+    if not pdf_files:
+        return documents
+
+    try:
+        from pypdf import PdfReader
+    except ImportError as exc:
+        raise RuntimeError(
+            "PDF ingestion requires `pypdf`. Run `pip install -r requirements.txt`."
+        ) from exc
+
+    for pdf_file in pdf_files:
+        reader = PdfReader(str(pdf_file))
+
+        for page_number, page in enumerate(reader.pages, start=1):
+            page_text = (page.extract_text() or "").strip()
+            if not page_text:
+                continue
+
+            for chunk_index, chunk_text in enumerate(
+                chunk_text_for_rag(page_text),
+                start=1,
+            ):
+                documents.append(
+                    {
+                        "id": f"{pdf_file.stem}_page_{page_number}_chunk_{chunk_index}",
+                        "text": chunk_text,
+                        "metadata": {
+                            "document_name": pdf_file.name,
+                            "source_path": str(pdf_file),
+                            "page_number": page_number,
+                            "chunk_index": chunk_index,
+                        },
+                    }
+                )
+
+    return documents
+
+
+def get_documents_for_demo() -> List[Dict[str, Any]]:
+    """
+    Choose the best available document source for the demo.
+
+    Parameters:
+    - None.
+
+    Returns:
+    - List[Dict[str, Any]]: The document chunks selected for the current demo
+      run.
+    """
+    pdf_documents = load_documents_from_pdf_files()
+    if pdf_documents:
+        return pdf_documents
+
     file_documents = load_documents_from_text_files()
 
     if file_documents:
@@ -109,10 +239,13 @@ def get_documents_for_demo() -> List[Dict[str, str]]:
 
 def build_vector_store() -> Any:
     """
-    Create a persistent ChromaDB collection and add sample documents.
+    Build or refresh the ChromaDB collection used by the RAG demo.
 
-    We use a sentence-transformer embedding model so every text chunk
-    is converted into a numerical vector.
+    Parameters:
+    - None.
+
+    Returns:
+    - Any: The ChromaDB collection object that stores the embedded chunks.
     """
     # PersistentClient stores the database on disk.
     client = chromadb.PersistentClient(path=str(CHROMA_PATH))
@@ -125,7 +258,7 @@ def build_vector_store() -> Any:
 
     # If the collection already exists, ChromaDB returns it.
     collection = client.get_or_create_collection(
-        name="class_notes",
+        name=COLLECTION_NAME,
         embedding_function=embedding_function,
     )
 
@@ -144,37 +277,110 @@ def build_vector_store() -> Any:
     collection.add(
         ids=[doc["id"] for doc in documents],
         documents=[doc["text"] for doc in documents],
-        metadatas=[{"source": "class_demo"} for _ in documents],
+        metadatas=[
+            doc.get("metadata", {"source": "class_demo"})
+            for doc in documents
+        ],
     )
 
     return collection
 
 
+def score_retrieved_chunk(user_query: str, chunk_text: str) -> int:
+    """
+    Apply a lightweight reranking score to make classroom retrieval cleaner.
+
+    Parameters:
+    - user_query: The user's question.
+    - chunk_text: One retrieved chunk being rescored.
+
+    Returns:
+    - int: A higher score for chunks that better match the classroom intent.
+    """
+    lowered_query = user_query.lower()
+    lowered_chunk = chunk_text.lower()
+    score = 0
+
+    query_mentions_children = any(term in lowered_query for term in CHILD_TERMS)
+    query_mentions_adults = any(term in lowered_query for term in {"adult", "adults"})
+
+    if any(term in lowered_chunk for term in ADULT_TERMS):
+        score += 2
+
+    if query_mentions_adults and any(term in lowered_chunk for term in {"adult", "adults"}):
+        score += 3
+
+    if not query_mentions_children and any(term in lowered_chunk for term in CHILD_TERMS):
+        score -= 4
+
+    if "safely" in lowered_query and any(
+        phrase in lowered_chunk
+        for phrase in {
+            "do not",
+            "should not",
+            "harmful",
+            "clinical support",
+            "nutritionally complete",
+        }
+    ):
+        score += 2
+
+    if re.search(r"\b\d+\s*kcal\b", lowered_chunk):
+        score += 1
+
+    return score
+
+
 def retrieve_top_k(collection: Any, user_query: str, top_k: int = 2) -> List[str]:
     """
-    Query ChromaDB and return the top-k most relevant documents.
+    Query ChromaDB and return the top-k most relevant chunk texts.
+
+    Parameters:
+    - collection: The ChromaDB collection to query.
+    - user_query: The user question used for semantic search.
+    - top_k: The number of final chunks to return after reranking.
+
+    Returns:
+    - List[str]: The selected chunk texts used as RAG context.
     """
-    # This prevents asking for more results than the collection contains.
-    safe_top_k = min(top_k, max(1, collection.count()))
+    # Pull a slightly larger candidate set, then rerank it for cleaner demos.
+    safe_top_k = min(max(top_k * 3, top_k), max(1, collection.count()))
 
     results = collection.query(
         query_texts=[user_query],
         n_results=safe_top_k,
     )
 
-    # ChromaDB returns a nested structure.
-    # We extract the list of retrieved document texts for the first query.
-    return list(results["documents"][0])
+    candidate_docs = list(results["documents"][0])
+    ranked_docs = sorted(
+        candidate_docs,
+        key=lambda doc: score_retrieved_chunk(user_query, doc),
+        reverse=True,
+    )
+
+    return ranked_docs[:top_k]
 
 
 def build_rag_prompt(user_query: str, retrieved_docs: List[str]) -> str:
     """
-    Create the final prompt that includes retrieved context.
+    Assemble the final grounded prompt sent to the language model.
+
+    Parameters:
+    - user_query: The original user question.
+    - retrieved_docs: The retrieved chunk texts that will become the context.
+
+    Returns:
+    - str: The final prompt text sent to the generation model.
     """
     context_block = "\n\n".join(retrieved_docs)
 
     prompt = f"""
     Answer the question using only the context below.
+    Write a short, classroom-friendly summary in plain language.
+    Prefer 3 to 5 clear bullet points when the question asks for guidance, methods, or recommendations.
+    Do not copy long phrases from the context.
+    Combine overlapping points into one clean summary.
+    If the context includes warnings or limits, include them briefly.
     If the answer is not in the context, say "I could not find it in the retrieved documents."
 
     Context:
@@ -191,41 +397,47 @@ def build_rag_prompt(user_query: str, retrieved_docs: List[str]) -> str:
 
 def run_rag_demo() -> None:
     """
-    Run the full RAG pipeline from vector storage to final LLM answer.
+    Run the end-to-end RAG demo with presentation-friendly console output.
+
+    Parameters:
+    - None.
+
+    Returns:
+    - None: This function prints the demo stages and final answer to the console.
     """
-    print("\nCreating or loading the ChromaDB vector store...")
+    print_banner("ChromaDB RAG Demo")
+    print_section("Stage 1: Build Vector Store")
     collection = build_vector_store()
-    print(f"Loaded {collection.count()} documents into ChromaDB.")
+    print_key_value("Collection name", COLLECTION_NAME)
+    print_key_value("Chunks loaded", str(collection.count()))
 
-    # Load the same Hugging Face model used in the prompt engineering demo.
+    print_section("Stage 2: Load Generation Model")
     generator = load_llm()
+    print_key_value("Provider", generator["provider"])
+    print_key_value("Model", generator["model_name"])
 
-    # Ask the user for a question so they can test retrieval live in class.
     user_query = input(
         "\nEnter a question for the RAG demo\n"
-        "(example: What is ChromaDB used for?): "
+        "(example: What supports safe and sustainable weight loss?): "
     ).strip()
 
     if not user_query:
-        user_query = "What is ChromaDB used for?"
+        user_query = "What supports safe and sustainable weight loss?"
 
     top_k = 2
     retrieved_docs = retrieve_top_k(collection, user_query=user_query, top_k=top_k)
 
-    print("\nTop-k retrieved documents:\n")
+    print_section("Stage 3: Retrieved Vector Context")
+    print_key_value("User question", user_query)
+    print_key_value("Top-k", str(top_k))
     for index, doc in enumerate(retrieved_docs, start=1):
-        print(f"{index}. {doc}\n")
+        print(f"\n[Retrieved Chunk {index}]\n{doc}\n")
 
     rag_prompt = build_rag_prompt(user_query, retrieved_docs)
-    rag_answer = ask_llm(generator, rag_prompt, max_new_tokens=160)
+    rag_answer = ask_llm(generator, rag_prompt, max_new_tokens=260)
 
-    print("=" * 80)
-    print("FINAL RAG PROMPT SENT TO THE LLM")
-    print("=" * 80)
+    print_section("Stage 4: Final Prompt Sent To The LLM")
     print(rag_prompt)
 
-    print("\n" + "=" * 80)
-    print("FINAL ANSWER")
-    print("=" * 80)
-
+    print_section("Stage 5: Final Grounded Answer")
     print(rag_answer)

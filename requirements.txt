@@ -10,6 +10,12 @@ sentence-transformers>=2.7.0
 # Vector database used for storing and retrieving embeddings
 chromadb>=0.5.0
 
+# PDF parsing for large-document ingestion into the vector store
+pypdf>=4.2.0
+
+# Graph database driver for storing entities and relationships in Neo4j
+neo4j>=5.20.0
+
 # Loads configuration values from a local .env file
 python-dotenv>=1.0.0
 

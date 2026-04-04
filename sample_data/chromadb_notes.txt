@@ -1,3 +1,3 @@
-ChromaDB stores vector embeddings so we can perform semantic search.
-In a RAG system, we embed documents, store them, query top-k results,
-and send the retrieved context to the language model.
+Weight-loss guidance is often clearer when recommendations are retrieved from trusted documents instead of recalled from memory alone.
+In a RAG system, we embed guideline text, store it, query top-k relevant passages,
+and send the retrieved evidence to the language model.

@@ -2,14 +2,24 @@
 Prompt engineering examples for classroom teaching.
 
 This file demonstrates multiple prompt techniques using the same
-Hugging Face model so students can compare the prompt patterns directly.
+model backend so students can compare the prompt patterns directly.
 """
 
 from llm_utils import ask_llm, load_llm
 
 
 def print_example(title: str, prompt: str, answer: str) -> None:
-    """Pretty-print one prompt engineering example."""
+    """
+    Print one prompt engineering example in a classroom-friendly format.
+
+    Parameters:
+    - title: The title shown above the example.
+    - prompt: The exact prompt that was sent to the model.
+    - answer: The model output returned for that prompt.
+
+    Returns:
+    - None.
+    """
     print("\n" + "=" * 80)
     print(f"{title}")
     print("=" * 80)
@@ -28,87 +38,80 @@ def run_prompt_engineering_demo() -> None:
     """
     generator = load_llm()
 
-    # 1. Zero-shot prompting:
-    # We ask the model to perform a task without giving any examples.
+    # 1. Zero-shot prompting asks for a direct answer with no examples.
     zero_shot_prompt = """
-    Explain photosynthesis for a 10-year-old in exactly 2 short sentences.
-    Use the words sunlight, water, and food.
+    Explain calorie deficit for a 12-year-old in exactly 2 short sentences.
+    Use the words food, energy, and body.
     Do not add a title or introduction.
     """.strip()
     zero_shot_answer = ask_llm(generator, zero_shot_prompt, max_new_tokens=60)
     print_example("1. Zero-shot Prompting", zero_shot_prompt, zero_shot_answer)
 
-    # 2. One-shot prompting:
-    # We provide exactly one example so the model learns the pattern.
+    # 2. One-shot prompting provides one example of the target pattern.
     one_shot_prompt = """
-    Rewrite each input as a polite email request.
+    Rewrite each input as supportive health coaching advice.
     Return only the rewritten sentence.
 
     Example:
-    Input: Send me the report today.
-    Output: Could you please send me the report today?
+    Input: Stop eating junk food.
+    Output: Try replacing some processed snacks with filling foods such as fruit, yogurt, or nuts.
 
-    Input: Give me the meeting notes.
+    Input: Skip dinner if you want to lose weight faster.
     Output:
     """.strip()
-    one_shot_answer = ask_llm(generator, one_shot_prompt, max_new_tokens=40)
+    one_shot_answer = ask_llm(generator, one_shot_prompt, max_new_tokens=70)
     print_example("2. One-shot Prompting", one_shot_prompt, one_shot_answer)
 
-    # 3. Few-shot prompting:
-    # We provide multiple examples so the model understands the pattern
-    # more clearly than one-shot prompting.
+    # 3. Few-shot prompting gives multiple labeled examples.
     few_shot_prompt = """
-    Classify the sentiment as Positive, Negative, or Neutral.
+    Classify the statement as Helpful, Risky, or Neutral for weight-loss guidance.
     Answer with one word only.
 
-    Review: I loved the product and the delivery was fast.
-    Sentiment: Positive
+    Statement: Walk regularly and build habits you can maintain.
+    Label: Helpful
 
-    Review: The item broke on the first day. Very disappointing.
-    Sentiment: Negative
+    Statement: Use an extreme crash diet without medical advice.
+    Label: Risky
 
-    Review: The package arrived yesterday. I have not used it yet.
-    Sentiment: Neutral
+    Statement: This guide discusses obesity treatment pathways.
+    Label: Neutral
 
-    Review: The laptop works smoothly and the battery life is excellent.
-    Sentiment:
+    Statement: Combine a balanced diet with physical activity for gradual progress.
+    Label:
     """.strip()
     few_shot_answer = ask_llm(generator, few_shot_prompt)
     print_example("3. Few-shot Prompting", few_shot_prompt, few_shot_answer)
 
-    # 4. Role prompting:
-    # Use a narrow tone-rewrite task so the role change is easy to see.
+    # 4. Role prompting changes the model's tone and framing.
     role_prompt = """
-    You are a polite customer support agent.
-    Rewrite the sentence in a calm, helpful tone.
+    You are a registered dietitian teaching a beginner.
+    Rewrite the sentence in a calm, practical tone.
     Return only one sentence.
 
-    Sentence: Your password is wrong. Try again.
+    Sentence: You failed your diet because you ate dessert.
     """.strip()
-    role_answer = ask_llm(generator, role_prompt, max_new_tokens=40)
+    role_answer = ask_llm(generator, role_prompt, max_new_tokens=60)
     print_example("4. Role Prompting", role_prompt, role_answer)
 
-    # 5. Step-by-step prompting:
-    # Demonstrate a stepwise answer with a simple everyday procedure.
+    # 5. Step-by-step prompting requests a compact ordered process.
     cot_prompt = """
     Explain the process in exactly 3 numbered steps.
     Keep each step short and clear.
     Return only the 3 steps and nothing else.
 
-    Task: How do you make a cup of tea?
+    Task: How do you start a simple weekly weight-loss routine?
     """.strip()
-    cot_answer = ask_llm(generator, cot_prompt, max_new_tokens=50)
+    cot_answer = ask_llm(generator, cot_prompt, max_new_tokens=70)
     print_example("5. Step-by-step Prompting", cot_prompt, cot_answer)
 
-    # 6. Structured output prompting:
-    # We explicitly ask the model for a fixed format.
+    # 6. Structured prompting asks for a fixed output shape.
     structured_prompt = """
     Fill in this exact format using short phrases only:
     Definition:
     Real-world use:
     One challenge:
 
-    Topic: Machine learning
+    Topic: Multicomponent weight management
     """.strip()
     structured_answer = ask_llm(generator, structured_prompt, max_new_tokens=60)
     print_example("6. Structured Output Prompting", structured_prompt, structured_answer)

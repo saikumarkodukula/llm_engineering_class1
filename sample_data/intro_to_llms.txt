@@ -1,3 +1,3 @@
-Large language models are trained on large amounts of text data.
-They learn patterns in language and can answer questions, summarize text,
-generate content, and help with reasoning tasks.
+Large language models can explain calorie deficit, summarize obesity guidance,
+rewrite health advice in plain language, and answer questions about retrieved documents.
+They should still be grounded with evidence when the task depends on specific recommendations.
