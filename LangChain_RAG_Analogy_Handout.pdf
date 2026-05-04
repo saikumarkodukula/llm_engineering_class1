@@ -1,0 +1,447 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+4 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R 18 0 R 20 0 R 22 0 R 24 0 R 26 0 R 28 0 R 30 0 R] /Count 13 >>
+endobj
+5 0 obj
+<< /Length 1906 >>
+stream
+BT /F2 20 Tf 1 0 0 1 54 726 Tm (LangChain RAG Using Simple Analogies) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 669 Tm (This handout explains chunking and retrieval in a way students can understand quickly.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 625 Tm (1. The Main Analogy) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 578 Tm (Think of RAG like an open-book exam.) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 540 Tm (- The **LLM** is the student.) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 523 Tm (- The **documents** are the textbook.) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 506 Tm (- **Chunking** is how we break the textbook into study cards.) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 489 Tm (- **Retrieval** is how we choose which study cards to hand to the student for one) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 474 Tm (question.) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 457 Tm (- The **final answer** is the student writing an answer using only those cards.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 419 Tm (If the cards are messy, the student gets confused.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 402 Tm (If the wrong cards are selected, the student answers poorly.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 358 Tm (2. One-Sentence Summary) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 313 Tm (Chunking = how we split knowledge) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 299 Tm (Retrieval = how we find the right pieces later) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 256 Tm (3. End-To-End RAG Flow) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 211 Tm (Big textbook) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 197 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 183 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 169 Tm (Split into study cards) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 155 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 141 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 127 Tm (Store the cards in a searchable system) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 113 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 99 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 85 Tm (Student asks a question) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 71 Tm (   |) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 1721 >>
+stream
+BT /F3 10 Tf 1 0 0 1 72 736 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 722 Tm (Pick the best cards) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 708 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 694 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 680 Tm (Give those cards to the LLM) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 666 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 652 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 638 Tm (LLM writes the final answer) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 595 Tm (4. Why Chunking Matters) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 548 Tm (Imagine you cut a textbook into pieces.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 510 Tm (If the pieces are too big:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 472 Tm (- each card has too many ideas) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 455 Tm (- search becomes noisy) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 438 Tm (- the right detail is harder to find) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 400 Tm (If the pieces are too small:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 362 Tm (- one idea gets broken into many tiny pieces) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 345 Tm (- context gets lost) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 328 Tm (- answers become incomplete) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 290 Tm (So good chunking means:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 252 Tm (- not too big) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 235 Tm (- not too small) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 218 Tm (- enough overlap to keep meaning together) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 174 Tm (5. Chunking Analogy) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 129 Tm (Textbook chapter:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 115 Tm ([definition][causes][diet advice][exercise][warnings]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 101 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 87 Tm (Good chunking:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 73 Tm ([definition + causes]) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 1304 >>
+stream
+BT /F3 10 Tf 1 0 0 1 72 736 Tm ([diet advice]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 722 Tm ([exercise]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 708 Tm ([warnings]) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 671 Tm (This is better than:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 635 Tm (Bad chunking:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 621 Tm ([definition + causes + diet advice + exercise + warnings]) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 584 Tm (and also better than:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 548 Tm (Too tiny:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 534 Tm ([def]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 520 Tm ([inition]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 506 Tm ([cause]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 492 Tm ([s]) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 449 Tm (6. Fixed Chunking) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 398 Tm (Analogy) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 355 Tm (Cut the textbook every 10 pages no matter what.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 313 Tm (What it means technically) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 270 Tm (The document is split into equal-size windows.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 228 Tm (Use it when) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 185 Tm (- you want the simplest baseline) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 168 Tm (- you need something fast and predictable) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 126 Tm (Strength) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 83 Tm (- easy to build) Tj ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 1170 >>
+stream
+BT /F1 11 Tf 1 0 0 1 72 736 Tm (- easy to teach) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 694 Tm (Weakness) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 651 Tm (- may cut an important idea in the middle) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 607 Tm (7. Recursive Chunking) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 556 Tm (Analogy) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 513 Tm (Try to cut at chapter breaks first.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 496 Tm (If a chapter is still too long, cut at paragraph breaks.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 479 Tm (If needed, cut again at sentence breaks.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 437 Tm (What it means technically) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 394 Tm (The system prefers natural boundaries before forcing a split.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 352 Tm (Use it when) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 309 Tm (- you want the best simple default) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 292 Tm (- documents have paragraphs or sections) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 250 Tm (Strength) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 207 Tm (- keeps ideas cleaner than fixed chunking) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 165 Tm (Weakness) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 122 Tm (- still does not fully understand meaning) Tj ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 11 0 R >>
+endobj
+13 0 obj
+<< /Length 1195 >>
+stream
+BT /F2 14 Tf 1 0 0 1 54 736 Tm (8. Semantic Chunking) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 685 Tm (Analogy) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 642 Tm (Group study cards by idea, not just by page number.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 604 Tm (For example:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 566 Tm (- all diet advice together) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 549 Tm (- all exercise advice together) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 532 Tm (- all warning statements together) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 490 Tm (What it means technically) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 447 Tm (The system uses embeddings to group nearby sentences with similar meaning.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 405 Tm (Use it when) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 362 Tm (- one page contains multiple topics) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 345 Tm (- meaning matters more than formatting) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 303 Tm (Strength) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 260 Tm (- cleaner idea-based chunks) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 218 Tm (Weakness) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 175 Tm (- more expensive than simple splitting) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 131 Tm (9. Structure-Based Chunking) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 80 Tm (Analogy) Tj ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 13 0 R >>
+endobj
+15 0 obj
+<< /Length 1218 >>
+stream
+BT /F1 11 Tf 1 0 0 1 54 713 Tm (Use the book's table of contents.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 696 Tm (Keep each section together when possible.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 654 Tm (What it means technically) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 611 Tm (The system chunks by headings, sections, and document structure.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 569 Tm (Use it when) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 526 Tm (- the document has clear headings) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 509 Tm (- you are working with guidelines, policies, or reports) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 467 Tm (Strength) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 424 Tm (- very intuitive for students) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 382 Tm (Weakness) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 339 Tm (- works best only when structure is clean) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 295 Tm (10. LLM-Based Chunking) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 244 Tm (Analogy) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 201 Tm (Ask a smart teaching assistant:) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 184 Tm ("Please split this chapter into the most meaningful study cards.") Tj ET
+BT /F2 12 Tf 1 0 0 1 54 142 Tm (What it means technically) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 99 Tm (A language model chooses chunk boundaries.) Tj ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 15 0 R >>
+endobj
+17 0 obj
+<< /Length 1916 >>
+stream
+BT /F2 12 Tf 1 0 0 1 54 736 Tm (Use it when) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 693 Tm (- you want advanced chunking) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 676 Tm (- the document is messy) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 659 Tm (- semantic boundaries matter a lot) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 617 Tm (Strength) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 574 Tm (- can create very natural chunks) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 532 Tm (Weakness) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 489 Tm (- depends on a working LLM) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 472 Tm (- slower and less reliable operationally) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 428 Tm (11. Chunking Comparison Diagram) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 383 Tm (One long document) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 369 Tm (-------------------------------------------------) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 355 Tm (Intro | Causes | Diet | Exercise | Warnings) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 341 Tm (-------------------------------------------------) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 327 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 313 Tm (Fixed:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 299 Tm ([Intro | Causes | Diet]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 285 Tm ([Diet | Exercise | Warn]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 271 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 257 Tm (Recursive:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 243 Tm ([Intro | Causes]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 229 Tm ([Diet | Exercise]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 215 Tm ([Warnings]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 201 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 187 Tm (Semantic:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 173 Tm ([Causes]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 159 Tm ([Diet]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 145 Tm ([Exercise]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 131 Tm ([Warnings]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 117 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 103 Tm (Structure-based:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 89 Tm ([Intro Section]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 75 Tm ([Causes Section]) Tj ET
+endstream
+endobj
+18 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 17 0 R >>
+endobj
+19 0 obj
+<< /Length 1479 >>
+stream
+BT /F3 10 Tf 1 0 0 1 72 736 Tm ([Diet Section]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 722 Tm ([Exercise Section]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 708 Tm ([Warnings Section]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 694 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 680 Tm (LLM-based:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 666 Tm ([Background]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 652 Tm ([Treatment]) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 638 Tm ([Safety Limits]) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 595 Tm (12. Why Retrieval Matters) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 548 Tm (Now imagine the student asks:) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 510 Tm ("How should obesity be managed in adults?") Tj ET
+BT /F1 11 Tf 1 0 0 1 54 472 Tm (You do not hand over the whole textbook.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 455 Tm (You choose the best study cards.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 417 Tm (That choice is retrieval.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 379 Tm (If retrieval is good:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 341 Tm (- the student gets the right evidence) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 324 Tm (- the answer is focused) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 286 Tm (If retrieval is poor:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 248 Tm (- the student gets irrelevant cards) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 231 Tm (- the answer becomes weak or wrong) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 187 Tm (13. Similarity Retrieval) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 136 Tm (Analogy) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 93 Tm (Pick the cards whose words and meaning are closest to the question.) Tj ET
+endstream
+endobj
+20 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 19 0 R >>
+endobj
+21 0 obj
+<< /Length 1355 >>
+stream
+BT /F2 12 Tf 1 0 0 1 54 736 Tm (What it means technically) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 693 Tm (The query embedding is compared with chunk embeddings, and the nearest chunks are) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 678 Tm (returned.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 636 Tm (Best for) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 593 Tm (- direct questions) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 576 Tm (- fast baseline retrieval) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 534 Tm (Example) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 491 Tm (Question:) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 474 Tm ("What warnings are given about very-low-calorie diets?") Tj ET
+BT /F1 11 Tf 1 0 0 1 54 436 Tm (Similarity search will likely return chunks mentioning:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 398 Tm (- clinical support) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 381 Tm (- supervision) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 364 Tm (- nutritionally complete plans) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 320 Tm (14. MMR Retrieval) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 269 Tm (Analogy) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 226 Tm (Pick the best cards, but do not give three cards that all say the same thing.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 184 Tm (What it means technically) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 141 Tm (MMR balances:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 103 Tm (- relevance to the question) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 86 Tm (- diversity across the selected chunks) Tj ET
+endstream
+endobj
+22 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 21 0 R >>
+endobj
+23 0 obj
+<< /Length 1337 >>
+stream
+BT /F2 12 Tf 1 0 0 1 54 709 Tm (Best for) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 666 Tm (- broad questions) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 649 Tm (- avoiding repeated evidence) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 607 Tm (Example) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 564 Tm (Question:) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 547 Tm ("How should obesity be managed in adults?") Tj ET
+BT /F1 11 Tf 1 0 0 1 54 509 Tm (Similarity may return:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 471 Tm (- diet card) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 454 Tm (- diet card) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 437 Tm (- diet card) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 399 Tm (MMR is more likely to return:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 361 Tm (- diet card) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 344 Tm (- exercise card) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 327 Tm (- behavior-change card) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 283 Tm (15. HyDE Retrieval) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 232 Tm (Analogy) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 189 Tm (Before searching the textbook, write a rough sample answer.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 172 Tm (Then use that rough answer to find better study cards.) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 130 Tm (What it means technically) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 87 Tm (An LLM first creates a hypothetical answer, and that hypothetical answer is used for) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 72 Tm (retrieval.) Tj ET
+endstream
+endobj
+24 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 23 0 R >>
+endobj
+25 0 obj
+<< /Length 1716 >>
+stream
+BT /F2 12 Tf 1 0 0 1 54 709 Tm (Best for) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 666 Tm (- vague questions) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 649 Tm (- weak user phrasing) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 607 Tm (Weakness) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 564 Tm (- depends on a working generation model) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 520 Tm (16. Retrieval Comparison Diagram) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 475 Tm (Question:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 461 Tm ("How should obesity be managed in adults?") Tj ET
+BT /F3 10 Tf 1 0 0 1 72 447 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 433 Tm (Similarity:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 419 Tm (-> diet) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 405 Tm (-> diet) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 391 Tm (-> diet) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 377 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 363 Tm (MMR:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 349 Tm (-> diet) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 335 Tm (-> exercise) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 321 Tm (-> behavior support) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 307 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 293 Tm (HyDE:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 279 Tm (question) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 265 Tm (  -> draft a hypothetical answer) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 251 Tm (      -> use that richer draft for search) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 237 Tm (          -> retrieve better mixed evidence) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 194 Tm (17. Best Way To Explain It Live) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 147 Tm (Use this script:) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 109 Tm ("Chunking decides how we cut the textbook into study cards. Retrieval decides which) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 94 Tm (cards we hand to the student. Better cards and better selection lead to better answers.") Tj ET
+endstream
+endobj
+26 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 25 0 R >>
+endobj
+27 0 obj
+<< /Length 1372 >>
+stream
+BT /F2 14 Tf 1 0 0 1 54 736 Tm (18. Best Classroom Defaults) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 689 Tm (For a safe live demo:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 651 Tm (- use **recursive chunking**) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 634 Tm (- use **similarity retrieval** first) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 617 Tm (- then compare with **MMR**) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 579 Tm (Why:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 541 Tm (- easy to explain) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 524 Tm (- works well in practice) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 507 Tm (- avoids depending too much on advanced generation features) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 463 Tm (19. Quick Examples) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 412 Tm (Example 1) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 369 Tm (Question:) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 352 Tm ("What warnings are given about very-low-calorie diets?") Tj ET
+BT /F1 11 Tf 1 0 0 1 54 314 Tm (Recommended:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 276 Tm (- chunking: recursive or structure-based) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 259 Tm (- retrieval: similarity) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 217 Tm (Example 2) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 174 Tm (Question:) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 157 Tm ("How should adults with obesity be managed?") Tj ET
+BT /F1 11 Tf 1 0 0 1 54 119 Tm (Recommended:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 81 Tm (- chunking: recursive, semantic, or structure-based) Tj ET
+endstream
+endobj
+28 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 27 0 R >>
+endobj
+29 0 obj
+<< /Length 758 >>
+stream
+BT /F1 11 Tf 1 0 0 1 72 736 Tm (- retrieval: MMR) Tj ET
+BT /F2 12 Tf 1 0 0 1 54 694 Tm (Example 3) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 651 Tm (Question:) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 634 Tm ("What is the usual treatment approach here?") Tj ET
+BT /F1 11 Tf 1 0 0 1 54 596 Tm (Recommended:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 558 Tm (- retrieval: HyDE if a working LLM is available) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 514 Tm (20. Final Takeaway) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 469 Tm (Strong answers do not come only from a strong model.) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 455 Tm (They come from:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 441 Tm (1. good chunking) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 427 Tm (2. good retrieval) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 413 Tm (3. good grounded context) Tj ET
+endstream
+endobj
+30 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 29 0 R >>
+endobj
+31 0 obj
+<< /Type /Catalog /Pages 4 0 R >>
+endobj
+xref
+0 32
+0000000000 65535 f 
+0000000015 00000 n 
+0000000085 00000 n 
+0000000160 00000 n 
+0000000228 00000 n 
+0000000369 00000 n 
+0000002327 00000 n 
+0000002473 00000 n 
+0000004246 00000 n 
+0000004392 00000 n 
+0000005748 00000 n 
+0000005895 00000 n 
+0000007118 00000 n 
+0000007266 00000 n 
+0000008514 00000 n 
+0000008662 00000 n 
+0000009933 00000 n 
+0000010081 00000 n 
+0000012050 00000 n 
+0000012198 00000 n 
+0000013730 00000 n 
+0000013878 00000 n 
+0000015286 00000 n 
+0000015434 00000 n 
+0000016824 00000 n 
+0000016972 00000 n 
+0000018741 00000 n 
+0000018889 00000 n 
+0000020314 00000 n 
+0000020462 00000 n 
+0000021272 00000 n 
+0000021420 00000 n 
+trailer
+<< /Size 32 /Root 31 0 R >>
+startxref
+21470
+%%EOF

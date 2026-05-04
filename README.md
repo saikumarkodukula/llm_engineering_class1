@@ -35,6 +35,8 @@ Menu options:
 - `3` Hybrid vector + graph demo using ChromaDB and Neo4j together
 - `4` Neo4j graph retrieval demo
 - `5` Run all demos in sequence
+- `6` Run the RAG evaluation scorecard
+- `7` Run the LangChain RAG strategies demo
 
 Direct launchers:
 
@@ -44,6 +46,8 @@ python3 run_rag_demo.py
 python3 run_hybrid_demo.py
 python3 run_neo4j_graph_demo.py
 python3 run_both_demos.py
+python3 run_rag_evaluation.py
+python3 run_langchain_rag_demo.py
 ```
 
 ## Repository Layout
@@ -52,6 +56,8 @@ python3 run_both_demos.py
 - `prompt_engineering_examples.py` prompt-technique examples
 - `llm_utils.py` shared provider loading and text generation helpers
 - `rag_chromadb_demo.py` ingestion, chunking, vector storage, retrieval, and RAG prompt construction
+- `rag_evaluation.py` golden-dataset RAG evaluation and scorecard reporting
+- `langchain_rag_demo.py` LangChain-based chunking strategies and retrieval strategies including HyDE
 - `graph_db_store.py` Neo4j schema, seed facts, extraction helpers, ingestion, and graph querying
 - `hybrid_graph_rag_demo.py` combines vector hits and graph facts before generation
 - `neo4j_graph_demo.py` pure graph retrieval demo
@@ -92,6 +98,27 @@ The RAG demo:
 5. retrieves the best matching chunks
 6. builds a grounded prompt
 7. asks the model for a final answer
+
+### RAG evaluation
+
+The RAG evaluation workflow:
+
+1. loads a golden dataset from `sample_data/rag_evaluation_dataset.json`
+2. runs retrieval against the ChromaDB collection
+3. measures Hit@3, Precision@5, Recall@5, MRR, and NDCG@5
+4. optionally generates answers with the active LLM provider
+5. scores faithfulness, correctness, relevancy, completeness, and format compliance
+6. records latency, failure rate, and simple business-facing signals
+7. saves the report to `rag_evaluation_report.json`
+
+### LangChain RAG strategies
+
+The LangChain demo adds:
+
+1. chunking choices: fixed, semantic, recursive, structure-based, and LLM-based
+2. retrieval choices: similarity, MMR, and HyDE
+3. a separate persisted Chroma store under `chroma_storage_langchain/`
+4. an interactive classroom flow for comparing strategy tradeoffs
 
 ### Graph demo
 

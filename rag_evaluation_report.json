@@ -1,0 +1,248 @@
+{
+  "framework": "chunk-level, answer-level, system-level, and business-level RAG evaluation",
+  "dataset_path": "sample_data/rag_evaluation_dataset.json",
+  "report_path": "rag_evaluation_report.json",
+  "generation_available": true,
+  "generation_error": "",
+  "summary": {
+    "retrieval": {
+      "hit_at_3": 0.8,
+      "precision_at_5": 0.2,
+      "recall_at_5": 0.5333333333333333,
+      "mrr": 0.8,
+      "ndcg_at_5": 0.5860424949130103
+    },
+    "generation": {
+      "faithfulness": 0.4897504713028907,
+      "correctness": 0.5333333333333333,
+      "relevancy": 0.9428571428571428,
+      "completeness": 0.6194444444444445,
+      "format_compliance": 0.85
+    },
+    "ops": {
+      "latency_p50_ms": 2024.68,
+      "latency_p95_ms": 2647.32,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "cost_per_query": "not_tracked_locally"
+    },
+    "business": {
+      "resolution_rate": 0.6,
+      "escalation_rate": 0.4,
+      "zero_result_rate": 0.0,
+      "csat": "not_tracked_in_local_demo"
+    }
+  },
+  "cases": [
+    {
+      "case_id": "fact_lookup_1",
+      "query": "What are the main parts of multicomponent obesity care?",
+      "difficulty": "easy",
+      "query_type": "fact_lookup",
+      "retrieved_sources": [
+        "nice_obesity_guideline_2014.pdf",
+        "nice_obesity_guideline_2014.pdf",
+        "nice_overweight_obesity_management_2026.pdf",
+        "nice_overweight_obesity_management_2026.pdf",
+        "nice_overweight_obesity_management_2026.pdf"
+      ],
+      "retrieval": {
+        "hit_at_3": 1.0,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.6666666666666666,
+        "mrr": 1.0,
+        "ndcg_at_5": 0.7039180890341347
+      },
+      "generation": {
+        "faithfulness": 0.5454545454545454,
+        "correctness": 0.25,
+        "relevancy": 1.0,
+        "completeness": 0.375,
+        "format_compliance": 1.0
+      },
+      "ops": {
+        "retrieval_latency_ms": 8.61,
+        "generation_latency_ms": 2638.69,
+        "total_latency_ms": 2647.32,
+        "failed": false,
+        "skipped": false,
+        "timeout": false
+      },
+      "business": {
+        "resolved": false,
+        "escalated": true,
+        "zero_result": false
+      },
+      "expected_answer": "The answer should mention nutrition support, physical activity, behavior change, and professional follow-up.",
+      "generated_answer": "Here is a summary of the main parts of multicomponent obesity care in plain language:\n\n* Assess the person's overall health by checking for risk factors such as high blood pressure, diabetes, and cholesterol levels.\n* Evaluate lifestyle factors like diet and physical activity, as well as psychosocial issues like stress and emotional state.\n* Consider environmental, social, and family influences that may be contributing to the person's weight.\n* Evaluate the person's motivation and willingness to make lifestyle changes.\n* Consider the potential benefits of weight loss for overall health.\n\nNote: Referral to specialized services (tier 3) may be necessary if underlying causes need to be assessed or if the person has complex needs that require additional support."
+    },
+    {
+      "case_id": "multi_hop_1",
+      "query": "What supports safe and sustainable weight loss over time?",
+      "difficulty": "medium",
+      "query_type": "multi_hop",
+      "retrieved_sources": [
+        "nih_obesity_guidelines_adults_1998.pdf",
+        "nih_obesity_guidelines_adults_1998.pdf",
+        "nice_overweight_obesity_management_2026.pdf",
+        "nice_overweight_obesity_management_2026.pdf",
+        "nih_obesity_guidelines_adults_1998.pdf"
+      ],
+      "retrieval": {
+        "hit_at_3": 1.0,
+        "precision_at_5": 0.2,
+        "recall_at_5": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_5": 0.6131471927654584
+      },
+      "generation": {
+        "faithfulness": 0.640625,
+        "correctness": 0.75,
+        "relevancy": 0.8571428571428571,
+        "completeness": 0.8333333333333334,
+        "format_compliance": 0.75
+      },
+      "ops": {
+        "retrieval_latency_ms": 26.39,
+        "generation_latency_ms": 1966.97,
+        "total_latency_ms": 1993.39,
+        "failed": false,
+        "skipped": false,
+        "timeout": false
+      },
+      "business": {
+        "resolved": true,
+        "escalated": false,
+        "zero_result": false
+      },
+      "expected_answer": "The answer should connect calorie deficit, physical activity, and sustainable behavior changes rather than highly restrictive dieting.",
+      "generated_answer": "Here are 3 clear bullet points that support safe and sustainable weight loss:\n\n\u2022 Aiming for a calorie deficit of 500 to 1,000 kcal/day through a combination of dietary changes and physical activity is recommended for safe and sustainable weight loss.\n\u2022 Eating a low-calorie diet (LCD) with reduced fat can be an effective way to reduce calories, but reducing dietary carbohydrates in addition to reducing fat can facilitate caloric reduction.\n\u2022 Safe and sustainable weight loss over time requires ongoing support and supervision from a healthcare professional, such as a registered dietitian or nutritionist, to ensure that the individual has access to nutritionally complete diets and guidance on reintroducing a wide range of foods."
+    },
+    {
+      "case_id": "ambiguous_1",
+      "query": "What weight-loss advice is relevant for adults?",
+      "difficulty": "medium",
+      "query_type": "ambiguous",
+      "retrieved_sources": [
+        "nih_obesity_guidelines_adults_1998.pdf",
+        "nice_overweight_obesity_management_2026.pdf",
+        "nice_overweight_obesity_management_2026.pdf",
+        "nice_overweight_obesity_management_2026.pdf",
+        "nice_obesity_guideline_2014.pdf"
+      ],
+      "retrieval": {
+        "hit_at_3": 1.0,
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_5": 1.0
+      },
+      "generation": {
+        "faithfulness": 0.7142857142857143,
+        "correctness": 1.0,
+        "relevancy": 1.0,
+        "completeness": 1.0,
+        "format_compliance": 0.75
+      },
+      "ops": {
+        "retrieval_latency_ms": 21.69,
+        "generation_latency_ms": 2352.12,
+        "total_latency_ms": 2373.83,
+        "failed": false,
+        "skipped": false,
+        "timeout": false
+      },
+      "business": {
+        "resolved": true,
+        "escalated": false,
+        "zero_result": false
+      },
+      "expected_answer": "The answer should stay focused on adults and avoid child-specific guidance.",
+      "generated_answer": "Here's a summary of the weight loss advice relevant for adults:\n\n\u2022 Aim to lose 10% of your baseline body weight, which is achievable through well-designed programs.\n\u2022 Focus on maintaining a moderate weight loss over time rather than trying to achieve a marked weight loss and then regaining it.\n\u2022 For adult patients with a BMI of 25-34.9 kg/m2, use sex-specific waist circumference cutoffs in conjunction with BMI to identify increased disease risks.\n\nNote: The advice is not recommended for everyone, particularly those who are living with obesity and need to lose weight rapidly (e.g., before surgery). In such cases, very-low-energy diets may be considered as part of a multicomponent strategy under the guidance of a specialist overweight and obesity management service. However, these diets should only be used for a limited period (12 weeks) and with ongoing clinical support and supervision."
+    },
+    {
+      "case_id": "no_answer_1",
+      "query": "What does the corpus say about diabetes medication dosing for children?",
+      "difficulty": "hard",
+      "query_type": "no_answer",
+      "retrieved_sources": [
+        "nice_overweight_obesity_management_2026.pdf",
+        "nice_obesity_guideline_2014.pdf",
+        "nice_overweight_obesity_management_2026.pdf",
+        "nih_obesity_guidelines_adults_1998.pdf",
+        "nice_obesity_guideline_2014.pdf"
+      ],
+      "retrieval": {
+        "hit_at_3": 0.0,
+        "precision_at_5": 0.0,
+        "recall_at_5": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_5": 0.0
+      },
+      "generation": {
+        "faithfulness": 0.0,
+        "correctness": 0.0,
+        "relevancy": 1.0,
+        "completeness": 0.0,
+        "format_compliance": 1.0
+      },
+      "ops": {
+        "retrieval_latency_ms": 26.03,
+        "generation_latency_ms": 1381.01,
+        "total_latency_ms": 1407.06,
+        "failed": false,
+        "skipped": false,
+        "timeout": false
+      },
+      "business": {
+        "resolved": false,
+        "escalated": true,
+        "zero_result": false
+      },
+      "expected_answer": "The system should say the answer is not present in the retrieved documents.",
+      "generated_answer": "I could not find specific information on diabetes medication dosing for children in the provided context. However, it is mentioned that weight management medicines are not generally recommended for children younger than 12 years (Section 1.17.8), and treatment with orlistat is recommended only if physical comorbidities are present in children aged 12 years and older (Section 1.17.10)."
+    },
+    {
+      "case_id": "long_tail_1",
+      "query": "What warnings are given about very-low-calorie diets?",
+      "difficulty": "hard",
+      "query_type": "long_tail",
+      "retrieved_sources": [
+        "nice_obesity_guideline_2014.pdf",
+        "nice_obesity_guideline_2014.pdf",
+        "nice_obesity_guideline_2014.pdf",
+        "nice_overweight_obesity_management_2026.pdf",
+        "nice_obesity_guideline_2014.pdf"
+      ],
+      "retrieval": {
+        "hit_at_3": 1.0,
+        "precision_at_5": 0.2,
+        "recall_at_5": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_5": 0.6131471927654584
+      },
+      "generation": {
+        "faithfulness": 0.5483870967741935,
+        "correctness": 0.6666666666666666,
+        "relevancy": 0.8571428571428571,
+        "completeness": 0.8888888888888888,
+        "format_compliance": 0.75
+      },
+      "ops": {
+        "retrieval_latency_ms": 21.68,
+        "generation_latency_ms": 2002.97,
+        "total_latency_ms": 2024.68,
+        "failed": false,
+        "skipped": false,
+        "timeout": false
+      },
+      "business": {
+        "resolved": true,
+        "escalated": false,
+        "zero_result": false
+      },
+      "expected_answer": "The answer should mention that very-low-calorie diets should not be used routinely without clinical support and a nutritionally complete plan.",
+      "generated_answer": "Here is a summary of the warnings related to very-low-calorie diets in plain language and 3 clear bullet points:\n\nWarning about using very-low-calorie diets for obesity management:\n\n\u2022 Do not use very-low-calorie diets (800 kcal/day or less) as a routine treatment for obesity, as they may not be effective and can lead to nutrient deficiencies.\n\u2022 Only consider very-low-calorie diets as part of a comprehensive weight management strategy for people who are obese and need rapid weight loss due to medical reasons.\n\u2022 Ensure that if you do use a very-low-calorie diet, it is nutritionally complete and follows specific guidelines (e.g., no more than 12 weeks) and with ongoing clinical support."
+    }
+  ]
+}

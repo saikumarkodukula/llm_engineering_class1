@@ -343,22 +343,65 @@ def retrieve_top_k(collection: Any, user_query: str, top_k: int = 2) -> List[str
     Returns:
     - List[str]: The selected chunk texts used as RAG context.
     """
+    retrieved_records = retrieve_top_k_records(
+        collection=collection,
+        user_query=user_query,
+        top_k=top_k,
+    )
+    return [record["text"] for record in retrieved_records]
+
+
+def retrieve_top_k_records(
+    collection: Any,
+    user_query: str,
+    top_k: int = 2,
+) -> List[Dict[str, Any]]:
+    """
+    Query ChromaDB and return top-k retrieved records with metadata.
+
+    Parameters:
+    - collection: The ChromaDB collection to query.
+    - user_query: The user question used for semantic search.
+    - top_k: The number of final records to return after reranking.
+
+    Returns:
+    - List[Dict[str, Any]]: Retrieved record dictionaries with text, metadata,
+      distance, and rerank score.
+    """
     # Pull a slightly larger candidate set, then rerank it for cleaner demos.
     safe_top_k = min(max(top_k * 3, top_k), max(1, collection.count()))
 
     results = collection.query(
         query_texts=[user_query],
         n_results=safe_top_k,
+        include=["documents", "metadatas", "distances"],
     )
 
-    candidate_docs = list(results["documents"][0])
-    ranked_docs = sorted(
-        candidate_docs,
-        key=lambda doc: score_retrieved_chunk(user_query, doc),
+    candidate_records: List[Dict[str, Any]] = []
+    documents = list(results["documents"][0])
+    metadatas = list(results["metadatas"][0])
+    distances = list(results["distances"][0])
+
+    for document, metadata, distance in zip(documents, metadatas, distances):
+        candidate_records.append(
+            {
+                "text": document,
+                "metadata": metadata or {},
+                "distance": distance,
+                "rerank_score": score_retrieved_chunk(user_query, document),
+            }
+        )
+
+    ranked_records = sorted(
+        candidate_records,
+        key=lambda record: (
+            record["rerank_score"],
+            -(record["distance"] or 0.0),
+        ),
         reverse=True,
     )
 
-    return ranked_docs[:top_k]
+    return ranked_records[:top_k]
 
 
 def build_rag_prompt(user_query: str, retrieved_docs: List[str]) -> str:

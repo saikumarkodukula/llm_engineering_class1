@@ -22,5 +22,11 @@ python-dotenv>=1.0.0
 # Optional OpenAI API client if you later enable the cloud provider
 openai>=1.0.0
 
+# LangChain building blocks for chunking and retrieval strategies
+langchain>=1.0.0
+langchain-text-splitters>=1.0.0
+langchain-chroma>=1.0.0
+langchain-huggingface>=1.0.0
+
 # Optional notebook support for live classroom demos
 jupyter>=1.0.0

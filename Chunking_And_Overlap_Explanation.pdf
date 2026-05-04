@@ -1,0 +1,249 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+4 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R 18 0 R] /Count 7 >>
+endobj
+5 0 obj
+<< /Length 1572 >>
+stream
+BT /F2 20 Tf 1 0 0 1 54 726 Tm (Chunking And Overlap Explanation) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 663 Tm (1. What Chunking Means) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 616 Tm (Chunking means splitting a long document into smaller pieces before creating embeddings.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 578 Tm (Instead of embedding one full PDF page or one full long article, the code breaks the) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 563 Tm (text into manageable chunks.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 525 Tm (This is important because retrieval works better when each stored unit is focused and) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 510 Tm (short enough to represent one idea clearly.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 466 Tm (2. Why Chunking Is Needed) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 419 Tm (If a very large document is embedded as one single vector:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 381 Tm (- many topics get mixed together) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 364 Tm (- retrieval becomes less precise) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 347 Tm (- the returned context may include too much irrelevant information) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 309 Tm (Chunking improves:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 271 Tm (- retrieval precision) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 254 Tm (- prompt size control) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 237 Tm (- evidence quality) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 193 Tm (3. Your Project Settings) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 146 Tm (In `rag_chromadb_demo.py`, the code uses:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 110 Tm (CHUNK_SIZE = 1000) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 96 Tm (CHUNK_OVERLAP = 150) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 1809 >>
+stream
+BT /F1 11 Tf 1 0 0 1 54 736 Tm (Meaning:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 698 Tm (- each chunk is about 1000 characters long) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 681 Tm (- each chunk overlaps the next one by about 150 characters) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 637 Tm (4. How Chunking Works Step By Step) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 590 Tm (The function `chunk_text_for_rag\(\)` does this:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 552 Tm (1. cleans whitespace) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 535 Tm (2. starts at position `0`) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 518 Tm (3. takes up to `chunk_size` characters) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 501 Tm (4. tries to stop at a space instead of cutting in the middle of a word) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 484 Tm (5. stores that chunk) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 467 Tm (6. moves forward, but backs up by `chunk_overlap`) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 450 Tm (7. repeats until the text is finished) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 406 Tm (5. Example Without Overlap) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 359 Tm (Suppose the text is:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 323 Tm (Safe weight loss requires a calorie deficit, balanced nutrition, and regular physical activity over time.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 286 Tm (If chunks are split with no overlap:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 250 Tm (Chunk 1: Safe weight loss requires a calorie deficit,) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 236 Tm (Chunk 2: balanced nutrition, and regular physical activity over time.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 199 Tm (Problem:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 161 Tm (- the idea is split in the middle) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 144 Tm (- one chunk has the start of the thought) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 127 Tm (- the next chunk has the rest) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 83 Tm (6. Example With Overlap) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 1556 >>
+stream
+BT /F1 11 Tf 1 0 0 1 54 713 Tm (With overlap:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 677 Tm (Chunk 1: Safe weight loss requires a calorie deficit, balanced nutrition,) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 663 Tm (Chunk 2: calorie deficit, balanced nutrition, and regular physical activity over time.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 626 Tm (Now the shared text appears in both chunks.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 588 Tm (Benefit:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 550 Tm (- if retrieval matches either part of the concept, enough context is still preserved) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 506 Tm (7. Character-Level Example With Your Numbers) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 459 Tm (Given:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 421 Tm (- `CHUNK_SIZE = 1000`) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 404 Tm (- `CHUNK_OVERLAP = 150`) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 366 Tm (The chunk ranges look like this:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 330 Tm (Chunk 1: 0 to 1000) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 316 Tm (Chunk 2: 850 to 1850) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 302 Tm (Chunk 3: 1700 to 2700) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 265 Tm (So each new chunk repeats the final 150 characters from the previous chunk.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 221 Tm (8. Why Overlap Helps Retrieval) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 174 Tm (Overlap reduces boundary problems.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 136 Tm (Boundary problem means:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 98 Tm (- important information is cut exactly where one chunk ends) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 81 Tm (- the next chunk starts without enough context) Tj ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 1628 >>
+stream
+BT /F1 11 Tf 1 0 0 1 54 713 Tm (Overlap helps because:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 675 Tm (- related sentences stay partially connected) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 658 Tm (- definitions and warnings are less likely to be split badly) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 641 Tm (- retrieval can still succeed even when the best match is near a chunk edge) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 597 Tm (9. Why Not Make Chunks Very Large) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 550 Tm (Huge chunks cause problems:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 512 Tm (- embeddings become less focused) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 495 Tm (- unrelated topics get mixed together) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 478 Tm (- final prompts become larger and noisier) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 461 Tm (- ranking quality often drops) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 423 Tm (So chunking trades one large noisy vector for many smaller, more meaningful vectors.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 379 Tm (10. Why Not Make Chunks Too Small) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 332 Tm (Very tiny chunks also cause problems:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 294 Tm (- not enough context) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 277 Tm (- definitions may become incomplete) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 260 Tm (- recommendations may lose the sentence that explains the condition or warning) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 222 Tm (So chunk size must balance:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 184 Tm (- focus) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 167 Tm (- context) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 150 Tm (- retrieval quality) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 106 Tm (11. Why 1000 And 150 Are Reasonable Here) Tj ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 11 0 R >>
+endobj
+13 0 obj
+<< /Length 1632 >>
+stream
+BT /F1 11 Tf 1 0 0 1 54 736 Tm (For your classroom project:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 698 Tm (- `1000` characters is large enough to preserve explanation context) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 681 Tm (- `150` characters is enough to keep neighboring context connected) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 643 Tm (That works well for:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 605 Tm (- textbook-style text) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 588 Tm (- guideline paragraphs) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 571 Tm (- PDF-derived content) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 527 Tm (12. How The Code Avoids Ugly Splits) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 480 Tm (Inside `chunk_text_for_rag\(\)`:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 442 Tm (- it does not blindly cut at exactly `start + chunk_size`) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 425 Tm (- it looks backward for a space) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 408 Tm (- if it finds a good space, it stops there instead) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 370 Tm (That means chunks usually end at natural word boundaries.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 332 Tm (This makes chunk text cleaner for both retrieval and final prompting.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 288 Tm (13. Where Chunking Is Used In Your Project) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 241 Tm (Chunking is applied in two places:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 203 Tm (- `load_documents_from_text_files\(\)`) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 186 Tm (- `load_documents_from_pdf_files\(\)`) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 148 Tm (That means both local text documents and PDF page text are split before embedding.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 104 Tm (14. Chunking And RAG Flow) Tj ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 13 0 R >>
+endobj
+15 0 obj
+<< /Length 1963 >>
+stream
+BT /F3 10 Tf 1 0 0 1 72 736 Tm (raw document) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 722 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 708 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 694 Tm (clean text) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 680 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 666 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 652 Tm (split into chunks) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 638 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 624 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 610 Tm (embed each chunk) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 596 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 582 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 568 Tm (store chunk vectors in ChromaDB) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 554 Tm (   |) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 540 Tm (   v) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 526 Tm (query nearest chunks later) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 489 Tm (So chunking is one of the most important preparation steps in the whole RAG pipeline.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 445 Tm (15. What Happens During Retrieval) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 398 Tm (When the user asks a question:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 360 Tm (1. the question becomes an embedding) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 343 Tm (2. Chroma compares it against all chunk embeddings) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 326 Tm (3. the nearest chunk vectors are returned) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 309 Tm (4. your code reranks them with classroom rules) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 292 Tm (5. the best chunks become the context for the final prompt) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 254 Tm (If chunking is poor, retrieval quality is poor.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 210 Tm (16. Practical Example) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 163 Tm (Suppose the PDF contains:) Tj ET
+BT /F3 10 Tf 1 0 0 1 72 127 Tm (Very-low-calorie diets should not be used routinely without clinical support and a nutritionally complete plan.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 90 Tm (Good chunking helps keep this recommendation and its warning together.) Tj ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 15 0 R >>
+endobj
+17 0 obj
+<< /Length 1284 >>
+stream
+BT /F1 11 Tf 1 0 0 1 54 713 Tm (If chunking were too aggressive, you might get:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 675 Tm (- one chunk with "Very-low-calorie diets should not be used") Tj ET
+BT /F1 11 Tf 1 0 0 1 72 658 Tm (- another chunk with "without clinical support and a nutritionally complete plan") Tj ET
+BT /F1 11 Tf 1 0 0 1 54 620 Tm (That split weakens retrieval and explanation quality.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 582 Tm (Overlap helps reduce that problem.) Tj ET
+BT /F2 14 Tf 1 0 0 1 54 538 Tm (17. Final Summary) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 491 Tm (Chunking is the step that turns long documents into retrieval-ready pieces.) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 453 Tm (In your code:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 415 Tm (- `CHUNK_SIZE = 1000` controls chunk length) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 398 Tm (- `CHUNK_OVERLAP = 150` preserves neighboring context) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 360 Tm (This improves:) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 322 Tm (- semantic retrieval) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 305 Tm (- answer grounding) Tj ET
+BT /F1 11 Tf 1 0 0 1 72 288 Tm (- final prompt quality) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 250 Tm (Simple rule:) Tj ET
+BT /F1 11 Tf 1 0 0 1 54 212 Tm (chunking makes long documents searchable, and overlap makes chunk boundaries safer.) Tj ET
+endstream
+endobj
+18 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 17 0 R >>
+endobj
+19 0 obj
+<< /Type /Catalog /Pages 4 0 R >>
+endobj
+xref
+0 20
+0000000000 65535 f 
+0000000015 00000 n 
+0000000085 00000 n 
+0000000160 00000 n 
+0000000228 00000 n 
+0000000326 00000 n 
+0000001950 00000 n 
+0000002096 00000 n 
+0000003957 00000 n 
+0000004103 00000 n 
+0000005711 00000 n 
+0000005858 00000 n 
+0000007539 00000 n 
+0000007687 00000 n 
+0000009372 00000 n 
+0000009520 00000 n 
+0000011536 00000 n 
+0000011684 00000 n 
+0000013021 00000 n 
+0000013169 00000 n 
+trailer
+<< /Size 20 /Root 19 0 R >>
+startxref
+13219
+%%EOF

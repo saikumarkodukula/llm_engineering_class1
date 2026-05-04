@@ -1,0 +1,82 @@
+[
+  {
+    "case_id": "fact_lookup_1",
+    "query": "What are the main parts of multicomponent obesity care?",
+    "expected_answer": "The answer should mention nutrition support, physical activity, behavior change, and professional follow-up.",
+    "expected_keywords": [
+      "nutrition support",
+      "physical activity",
+      "behavior change",
+      "professional follow-up"
+    ],
+    "gold_sources": [
+      "nih_obesity_guidelines_adults_1998.pdf",
+      "nice_obesity_guideline_2014.pdf",
+      "nice_overweight_obesity_management_2026.pdf"
+    ],
+    "difficulty": "easy",
+    "query_type": "fact_lookup",
+    "should_answer": true
+  },
+  {
+    "case_id": "multi_hop_1",
+    "query": "What supports safe and sustainable weight loss over time?",
+    "expected_answer": "The answer should connect calorie deficit, physical activity, and sustainable behavior changes rather than highly restrictive dieting.",
+    "expected_keywords": [
+      "calorie deficit",
+      "physical activity",
+      "sustainable",
+      "restrictive"
+    ],
+    "gold_sources": [
+      "nih_obesity_guidelines_adults_1998.pdf",
+      "nice_obesity_guideline_2014.pdf"
+    ],
+    "difficulty": "medium",
+    "query_type": "multi_hop",
+    "should_answer": true
+  },
+  {
+    "case_id": "ambiguous_1",
+    "query": "What weight-loss advice is relevant for adults?",
+    "expected_answer": "The answer should stay focused on adults and avoid child-specific guidance.",
+    "expected_keywords": [
+      "adults",
+      "weight loss",
+      "guidance"
+    ],
+    "gold_sources": [
+      "nih_obesity_guidelines_adults_1998.pdf"
+    ],
+    "difficulty": "medium",
+    "query_type": "ambiguous",
+    "should_answer": true
+  },
+  {
+    "case_id": "no_answer_1",
+    "query": "What does the corpus say about diabetes medication dosing for children?",
+    "expected_answer": "The system should say the answer is not present in the retrieved documents.",
+    "expected_keywords": [],
+    "gold_sources": [],
+    "difficulty": "hard",
+    "query_type": "no_answer",
+    "should_answer": false
+  },
+  {
+    "case_id": "long_tail_1",
+    "query": "What warnings are given about very-low-calorie diets?",
+    "expected_answer": "The answer should mention that very-low-calorie diets should not be used routinely without clinical support and a nutritionally complete plan.",
+    "expected_keywords": [
+      "very-low-calorie diets",
+      "clinical support",
+      "nutritionally complete plan"
+    ],
+    "gold_sources": [
+      "nih_obesity_guidelines_adults_1998.pdf",
+      "nice_obesity_guideline_2014.pdf"
+    ],
+    "difficulty": "hard",
+    "query_type": "long_tail",
+    "should_answer": true
+  }
+]
